@@ -8,30 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace MIT_Controller
 {
     public partial class Form1 : Form
     {
-        byte[] data = new byte[1];
-
         public Form1()
         {
             InitializeComponent();
 
-            serialPort1.PortName = "COM9";
-            serialPort1.BaudRate = 9600;
-            serialPort1.Open();
-        }
+            // Добавление нового графика
+            Series series = chart1.Series.Add("New");
 
-        private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
-        {
-            serialPort1.Read(data, 0, 1);
+            // Добавление точек на график
+            series.Points.AddXY(1, 1);
+            series.Points.AddXY(2, 3);
+            series.Points.AddXY(3, 7);
 
-            string receivedDataHex = data[0].ToString("X2");
-            MessageBox.Show($"Received data (HEX): {receivedDataHex}");
+            // Настройка вида графика (тип, цвет и др.)
+            series.ChartType = SeriesChartType.Line;
+            series.Color = System.Drawing.Color.Blue;
 
-            serialPort1.Close();
+            // Настройка осей
+            chart1.ChartAreas[0].AxisX.Title = "X Axis";
+            chart1.ChartAreas[0].AxisY.Title = "Y Axis";
         }
     }
 }
